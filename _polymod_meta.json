@@ -1,0 +1,75 @@
+{
+	"title": "VS Impostor PC V-Slice Port",
+	"description": "a Port of the mod Vs Impostor v4/legacy",
+	"homepage": "https://gamebanana.com/mods/512511",
+	"contributors": [
+		{
+		"name": "SansGzz",
+		"role": "Porter",
+        "url": "https://x.com/sansgzz"
+		},
+		{
+		"name": "zz.yura",
+		"role": "Porter",
+        "url": "https://gamebanana.com/members/3503732"
+		},
+		{
+		"name": "Juxz",
+		"role": "Porter",
+        "url": "https://gamebanana.com/members/4708815"
+		},
+		{
+		"name": "Steven He",
+		"role": "Coder",
+        "url": "https://gamebanana.com/members/4674399"
+		},
+		{
+		"name": "Jarek",
+		"role": "Coder",
+        "url": "https://gamebanana.com/members/2145650"
+		},
+		{
+		"name": "KT_Gameplay",
+		"role": "Porter",
+        "url": "https://gamebanana.com/members/4774795"
+		},
+      {
+		"name": "Blanon123",
+		"role": "Old Freeplay Icons",
+		"url": "https://gamebanana.com/members/1740499"
+		},
+		{
+		"name": "IMPOSTORM",
+		"role": "Original Mod Development Team",
+        "url": "https://gamebanana.com/mods/55652"
+		},
+		{
+		"name": "poedev08",
+		"role": "Change Character Event",
+		"url": "https://gamebanana.com/members/2095900"
+		},
+		{
+		"name": "UpDown LeftRight",
+		"role": "Slightly Improved Camera Event",
+		"url": "https://gamebanana.com/members/1790393"
+		},
+		{
+		"name": "CigsCigar",
+		"role": "Psych to Basegame Character Converter",
+		"url": "https://gamebanana.com/members/2430292"
+		},
+		{
+		"name": "RedBoyYT",
+		"role": "V-Slice Mod Template",
+		"url": "https://gamebanana.com/members/1790393"
+		},
+		{
+		"name": "Squeesquee",
+		"role": "Reactor Voices",
+		"url": "https://gamebanana.com/members/1928027"
+		}
+	],
+	"api_version":"0.8.0",
+	"mod_version":"2.0.0",
+	"license":"CC BY 4.0,MIT"
+}
