@@ -1,13 +1,7 @@
 {
-	"title": "VS Impostor PC V-Slice Port",
-	"description": "a Port of the mod Vs Impostor v4/legacy",
-	"homepage": "https://gamebanana.com/mods/512511",
+	"title": "VS Impostor Legacy",
+	"description": "a Port of VS Impostor Legacy",
 	"contributors": [
-		{
-		"name": "SansGzz",
-		"role": "Porter",
-        "url": "https://x.com/sansgzz"
-		},
 		{
 		"name": "zz.yura",
 		"role": "Porter",
@@ -24,13 +18,13 @@
         "url": "https://gamebanana.com/members/4674399"
 		},
 		{
-		"name": "Jarek",
+		"name": "jarekboho",
 		"role": "Coder",
         "url": "https://gamebanana.com/members/2145650"
 		},
 		{
 		"name": "KT_Gameplay",
-		"role": "Porter",
+		"role": "Porter and Coder",
         "url": "https://gamebanana.com/members/4774795"
 		},
       {
@@ -39,7 +33,7 @@
 		"url": "https://gamebanana.com/members/1740499"
 		},
 		{
-		"name": "IMPOSTORM",
+		"name": "MOTORFROG",
 		"role": "Original Mod Development Team",
         "url": "https://gamebanana.com/mods/55652"
 		},
@@ -69,7 +63,7 @@
 		"url": "https://gamebanana.com/members/1928027"
 		}
 	],
-	"api_version":"0.8.0",
-	"mod_version":"2.0.0",
+	"api_version":"0.8.4",
+	"mod_version":"1.0.0",
 	"license":"CC BY 4.0,MIT"
 }
