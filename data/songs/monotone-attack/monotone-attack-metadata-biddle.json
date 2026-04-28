@@ -1,15 +1,10 @@
 {
  "version": "2.2.4",
- "songName": "Monotone Attack",
+ "songName": "Monotone Attack (Biddle)",
  "artist": "Biddle3",
  "charter": "KT_Gameplay",
  "offsets": { },
  "playData": {
-  "songVariations": [
-   "biddle",
-   "attack",
-   "fabs"
-  ],
   "difficulties": [
    "easy",
    "normal",
