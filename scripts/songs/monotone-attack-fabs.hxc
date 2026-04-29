@@ -1,0 +1,119 @@
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import flixel.FlxG;
+import flixel.math.FlxMath;
+import funkin.util.Constants;
+import StringTools;
+
+class MonotoneAttackFabsSong extends Song
+{
+	public function new()
+	{
+		super('monotone-attack', {variation: 'fabs'});
+	}
+
+	var playerX;
+	var attackIcon:HealthIconData = {
+      id: 'fabs',
+      scale: 1,
+      flipX: false,
+      isPixel: false,
+      offsets: [0, 0],
+    };
+	var clowIcon:HealthIconData = {
+      id: 'biddle',
+      scale: 1,
+      flipX: true,
+      isPixel: false,
+      offsets: [0, 0],
+    };
+	var MAXIMUM_HEALTH:Float = Constants.HEALTH_MAX;
+    var playerColor = null;
+    var oppColor = null;
+    var crowd;
+    var cooper;
+    var nick;
+    var orbyy;
+    var offbi;
+    var loggo;
+
+	function onCountdownStart(event)
+	{
+		super.onCountdownStart(event);
+
+		if(!FlxG.onMobile)
+		{
+		playerX = PlayState.instance.playerStrumline.x;
+		PlayState.instance.playerStrumline.x = PlayState.instance.opponentStrumline.x;
+		PlayState.instance.opponentStrumline.x = playerX;
+	    }
+
+		PlayState.instance.healthBar.flipX = true;
+        PlayState.instance.iconP2.flipX = true;
+        PlayState.instance.iconP1.flipX = false;
+        PlayState.instance.iconP1.configure(attackIcon);
+        PlayState.instance.iconP2.configure(clowIcon);
+        PlayState.instance.iconP1.autoUpdate = false;
+        PlayState.instance.iconP2.autoUpdate = false;
+        playerColor = IconColourFinder.findIconColour(PlayState.instance.iconP2);
+        oppColor = IconColourFinder.findIconColour(PlayState.instance.iconP1);
+        PlayState.instance.healthBar.createFilledBar(oppColor, playerColor);
+        PlayState.instance.healthBar.updateBar();
+
+        var stage = PlayState.instance.currentStage;
+
+            crowd = stage.getNamedProp('crowd');
+            cooper = stage.getNamedProp('cooper');
+            nick = stage.getNamedProp('nick');
+            orbyy = stage.getNamedProp('orbyy');
+            offbi = stage.getNamedProp('offbi');
+            loggo = stage.getNamedProp('loggo');
+	}
+
+	function onSongRetry(event)
+    {
+        super.onSongRetry(event);
+
+        if(!FlxG.onMobile)
+        {
+            playerX = PlayState.instance.playerStrumline.x;
+            PlayState.instance.playerStrumline.x = PlayState.instance.opponentStrumline.x;
+            PlayState.instance.opponentStrumline.x = playerX;
+        }
+    }
+
+	function onUpdate(event)
+    {
+        super.onUpdate(event);
+
+        PlayState.instance.iconP1.updateHealthIcon(PlayState.instance.health);
+        PlayState.instance.iconP2.updateHealthIcon(MAXIMUM_HEALTH - PlayState.instance.health);
+
+        PlayState.instance.iconP2.x = PlayState.instance.healthBar.x
+            + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 0, 100) * 0.01))
+            - (PlayState.instance.iconP2.width - 26);
+
+        PlayState.instance.iconP1.x = PlayState.instance.healthBar.x
+            + (PlayState.instance.healthBar.width * (FlxMath.remapToRange(PlayState.instance.healthBar.value, 0, 2, 0, 100) * 0.01) - 26);
+    }
+
+    function onBeatHit(event)
+    {
+		if(PlayState.instance.currentStage == null) return;
+
+        super.onBeatHit(event);
+
+        if (event.beat % 2 == 0)
+        {
+            cooper.playAnimation('idle', true);
+            crowd.playAnimation('idle', true);
+            if (!StringTools.startsWith(nick.getCurrentAnimation(), 'okay')) nick.playAnimation('idle', true);
+	    }
+	    else if (event.beat % 2 == 1)
+	    {
+            offbi.playAnimation('idle', true);
+            if (!StringTools.startsWith(orbyy.getCurrentAnimation(), 'shutup')) orbyy.playAnimation('idle', true);
+            loggo.playAnimation('idle', true);
+	    }
+    }
+}

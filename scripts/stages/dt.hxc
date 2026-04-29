@@ -1,0 +1,191 @@
+import funkin.play.stage.Stage;
+import flixel.addons.display.FlxBackdrop;
+import flixel.system.FlxBGSprite;
+import openfl.filters.ShaderFilter;
+import StringTools;
+import flixel.FlxSprite;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.tweens.FlxEase;
+import funkin.graphics.FunkinSprite;
+import openfl.display.BlendMode;
+import flixel.util.FlxColor;
+import funkin.graphics.shaders.DropShadowShader;
+import funkin.graphics.shaders.RuntimeRainShader;
+
+class DTStage extends Stage
+{
+    public function new()
+    {
+        super('dt');
+    }
+
+    var greenShader = null;
+var bfShader = null;
+var overlayShader:OverlayShader;
+var ext = 'BG/dt/';
+var toogusorange:FlxSprite;
+var toogusblue:FlxSprite;
+var tooguswhite:FlxSprite;
+var red:Character;
+var redElement:FlxSpriteElement;
+var introFade:FlxSprite;
+var mist:FlxBackdrop;
+var mist2:FlxBackdrop;
+var mist3:FlxBackdrop;
+var mist4:FlxBackdrop;
+var mist5:FlxBackdrop;
+var mist6:FlxBackdrop; // cutscene mists
+var mist7:FlxBackdrop;
+var shine:FlxSprite;
+var rainIntensity:Float = .1;
+var heartRad:Float = 0;
+var rainShader:RuntimeRainShader = new RuntimeRainShader();
+
+var bfIntro:FunkinSprite;
+
+function onCreate(event)
+{
+    super.onCreate(event);
+
+    rainShader.scale = FlxG.height / 200;
+    rainShader.intensity = 0.1;
+
+    rainShaderFilter = new ShaderFilter(rainShader);
+    FlxG.camera.filters = [rainShaderFilter];
+}
+
+  override function onUpdate(event:ScriptEvent)
+  {
+    super.onUpdate(event);
+
+    rainShader.updateViewInfo(FlxG.width, FlxG.height, FlxG.camera);
+    rainShader.update(event.elapsed);
+  }
+
+override function buildStage()
+{
+    super.buildStage();
+
+	mist = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist.scrollFactor.set(1.2, 1.2);
+	mist.velocity.x = 60;
+	mist.blend = BlendMode.ADD;
+	mist.alpha = .3;
+	mist.y = 200;
+	mist.color = 0xFF000000;
+	add(mist);
+	mist.zIndex = 10;
+	
+	mist2 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist2.scrollFactor.set(1.3, 1.3);
+	mist2.velocity.x = 110;
+	mist2.blend = BlendMode.ADD;
+	mist2.setPosition(300, -200);
+	mist2.scale.set(1.2, 1.2);
+	mist2.updateHitbox();
+	mist2.alpha = .2;
+	add(mist2);
+	mist2.zIndex = 10;
+	
+	mist3 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist3.scrollFactor.set(1.3, 1.3);
+	mist3.velocity.x = 50;
+	mist3.blend = BlendMode.ADD;
+	mist3.setPosition(300, -200);
+	mist3.scale.set(1.2, 1.2);
+	mist3.updateHitbox();
+	mist3.alpha = .15;
+	add(mist3);
+	mist3.zIndex = 10;
+	
+	mist4 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist4.scrollFactor.set(1.4, 1.4);
+	mist4.velocity.x = 150;
+	mist4.blend = BlendMode.ADD;
+	mist4.setPosition(300, -200);
+	mist4.scale.set(1.2, 1.2);
+	mist4.updateHitbox();
+	mist4.alpha = .1;
+	add(mist4);
+	mist4.zIndex = 10;
+	
+	mist5 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist5.scrollFactor.set(1.3, 1.3);
+	mist5.velocity.x = 20;
+	mist5.blend = BlendMode.ADD;
+	mist5.setPosition(300, -200);
+	mist5.scale.set(1.2, 1.2);
+	mist5.updateHitbox();
+	mist5.alpha = .05;
+	add(mist5);
+	mist5.zIndex = 10;
+	
+	add(mist6);
+	add(mist7);
+
+	mist6 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist6.scrollFactor.set(1.3, 1.3);
+	mist6.velocity.set(40, 10);
+	mist6.blend = BlendMode.ADD;
+	mist6.setPosition(300, 700);
+	mist6.scale.set(1.2, 1.2);
+	mist6.updateHitbox();
+	mist6.alpha = 0.9;
+	mist6.zIndex = 10;
+	
+	mist7 = new FlxBackdrop(Paths.image(ext + 'mist', 'shared'), 0x01);
+	mist7.scrollFactor.set(1.3, 1.3);
+	mist7.velocity.set(30, 40);
+	mist7.blend = BlendMode.ADD;
+	mist7.setPosition(300, 700);
+	mist7.scale.set(1.8, 1.8);
+	mist7.updateHitbox();
+	mist7.alpha = 0.7;
+	mist7.zIndex = 10;
+	
+	mist6.color = mist7.color = FlxColor.fromRGB(160, 110, 255);
+
+	this.getNamedProp('clouds').angularVelocity = 0.1;
+	this.getNamedProp('clouds').origin.set(this.getNamedProp('clouds').width * .65, this.getNamedProp('clouds').height + 1920);
+
+	this.getNamedProp('moon').screenCenter();
+	this.getNamedProp('moon').x += 1000;
+	this.getNamedProp('moon').y -= 900;
+
+	this.getNamedProp('shine').screenCenter();
+	this.getNamedProp('shine').angularVelocity = 90;
+	this.getNamedProp('shine').x += 1020;
+	this.getNamedProp('shine').y -= 930;
+
+	FlxTween.tween(this.getNamedProp('lightoverlay'), {alpha: .25}, .5, {type: 4, ease: FlxEase.sineInOut});
+	FlxTween.tween(this.getNamedProp('lightoverlay2'), {alpha: .25}, .5, {startDelay: .5, type: 4, ease: FlxEase.sineInOut});
+
+	this.getNamedProp('overlay').screenCenter();
+	this.getNamedProp('overlay').x += 500;
+	this.getNamedProp('overlay').y += 300;
+}
+
+function onSongLoaded(event)
+{
+	this.getNamedProp('moon').screenCenter();
+	this.getNamedProp('moon').x += 1000;
+	this.getNamedProp('moon').y -= 900;
+
+	this.getNamedProp('shine').screenCenter();
+	this.getNamedProp('shine').x += 1020;
+	this.getNamedProp('shine').y -= 930;
+
+	this.getNamedProp('overlay').screenCenter();
+	this.getNamedProp('overlay').x += 500;
+	this.getNamedProp('overlay').y += 300;
+}
+
+public function intro()
+{
+    if(!PlayState.instance.isInCutscene) return;
+
+    FlxTween.tween(mist6, {alpha: 0}, 22, {onComplete: function(_) mist6.kill()});
+    FlxTween.tween(mist7, {alpha: 0}, 30, {onComplete: function(_) mist7.kill()});
+}
+}

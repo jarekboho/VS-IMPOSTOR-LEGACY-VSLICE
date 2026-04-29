@@ -72,7 +72,6 @@ class SusCreditBoxModule extends Module
         var title:String = game.currentSong.songName;
         var creator:String = game.currentSong.songArtist;
         var charter:String = game.currentSong.charter;
-        var porter:String = Json.parse(Paths.json('porter/' + game.currentSong.id.toLowerCase()));
 
         // ===============================
         // LAYOUT

@@ -1,0 +1,86 @@
+import funkin.play.song.Song;
+import funkin.play.PlayState;
+import funkin.data.character.CharacterDataParser;
+import funkin.graphics.shaders.DropShadowShader;
+import flixel.FlxG;
+import flixel.addons.display.FlxRuntimeShader;
+import openfl.filters.ShaderFilter;
+import StringTools;
+import funkin.Conductor;
+
+class DoubleTroubleSong extends Song
+{
+    public function new()
+    {
+        super('double-trouble');
+    }
+
+    var redElement = null;
+    var redPostor = null;
+    var bfShader = null;
+    var greenShader = null;
+    var bf;
+    var gf;
+    var dad;
+    var redSnap:Bool = false;
+
+    function onSongLoaded(event)
+    {
+        super.onSongLoaded(event);
+
+        redPostor = CharacterDataParser.fetchCharacter('red-dt');
+        redPostor.x = -420;
+        redPostor.y = -380;
+        redPostor.origin.set();
+
+        bf = PlayState.instance.currentStage.getBoyfriend();
+        gf = PlayState.instance.currentStage.getGirlfriend();
+        redElement = new animate.internal.elements.FlxSpriteElement(redPostor);
+        dad = PlayState.instance.currentStage.getDad();
+        var placeholder = dad.library.getSymbol('red placeholder');
+	
+	placeholder.timeline.layers[0].forEachFrame((frame) -> {
+		for (i in frame.elements)
+			i.visible = false;
+			
+		frame.add(redElement);
+	});
+
+    bfShader = new DropShadowShader();
+    bfShader.setAdjustColor(-78, -25, -15, -58);
+
+    greenShader = new DropShadowShader();
+    greenShader.setAdjustColor(-28, -22, -10, -60);
+
+    bf.shader = gf.shader = bfShader;
+    redPostor.shader = dad.shader = greenShader;
+    }
+
+
+function onNoteHit(event)
+{
+    if(event.note.noteData.getMustHitNote()) return;
+
+    var greenSing:Bool = (event.note.noteData.kind != 'GF');
+
+    if (event.note.noteData.kind == 'Both Opponents Sing')
+	{
+		if (redSnap) redPostor.playSingAnimation(event.note.noteData.getDirection(), false, 'mad'); // im jsut so tired
+		else redPostor.playSingAnimation(event.note.noteData.getDirection(), false);
+	}
+	else if (!greenSing)
+	{
+		if (redSnap) redPostor.playSingAnimation(event.note.noteData.getDirection(), false, 'mad'); // im jsut so tired
+		else redPostor.playSingAnimation(event.note.noteData.getDirection(), false);
+        event.stopPropagation();
+	}
+	else
+	{
+		if (!StringTools.startsWith(redPostor.getCurrentAnimation(), 'sing') || redPostor.holdTimer >= Conductor.instance.stepLengthMs / 1500)
+		{
+			redPostor.playSingAnimation(event.note.noteData.getDirection(), false, 'balance');
+			redPostor.holdTimer = 0;
+		}
+	}
+}
+}
