@@ -54,6 +54,7 @@
       "offsets": [18.5, 14],
       "data": {
         "enabled": true,
+        "framerateDefault": 18,
         "leftSplashes": [
           { "prefix": "left0" },
           { "prefix": "left0" },
