@@ -1,0 +1,109 @@
+import funkin.modding.module.Module;
+import flixel.FlxSprite;
+import funkin.play.PlayState;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import funkin.FunkinMemory;
+import funkin.Paths;
+
+class LegacyPopUps extends Module
+{
+    public function new()
+    {
+        super('LegacyPopUps', {state: PlayState});
+        for (i in 0...10)
+        {
+            FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/num' + i));
+            FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/num' + i));
+        }
+        
+        // normal
+        FunkinMemory.cacheTexture(Paths.image('notestyles/epic'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/sick'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/good'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/bad'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/shit'));
+
+        // pixel
+        FunkinMemory.cacheTexture(Paths.image('notestyles/epic-pixel'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/sick'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/good'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/bad'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/shit'));
+    }
+
+    public var popUps:Null<FlxSprite>;
+    public var comboNumber:Null<FunkinSprite>;
+
+    function onCountdownStart(event)
+    {
+        super.onCountdownStart(event);
+        if(PlayState.instance.noteStyle.id.toLowerCase() != 'impostor' && PlayState.instance.noteStyle.id.toLowerCase() != 'pixelimpostor') return;
+
+        popUps = new FlxSprite().loadGraphic(Paths.image('notestyles/epic'));
+        popUps.screenCenter(0x01);
+        popUps.y = PlayState.instance.playerStrumline.y;
+        popUps.cameras = [PlayState.instance.camHUD];
+        popUps.alpha = 0.001;
+        popUps.updateHitbox();
+        PlayState.instance.add(popUps);
+        PlayState.instance.remove(PlayState.instance.comboPopUps);
+    }
+
+    override function onNoteHit(event)
+    {
+        if(PlayState.instance == null) return;
+        if(PlayState.instance.noteStyle.id != 'impostor' && PlayState.instance.noteStyle.id != 'pixelImpostor') return;
+        super.onNoteHit(event);
+
+        if(PlayState.instance.noteStyle.id.toLowerCase() == 'impostor')
+        {
+        switch (event.judgement)
+        {
+            
+            case 'sick':
+                if(event.hitDiff <= 22.5) popUpScore('notestyles/epic', event.comboCount);
+                else popUpScore('ui/popup/funkin/sick', event.comboCount);
+
+            case 'good':
+                popUpScore('ui/popup/funkin/good', event.comboCount);
+
+            case 'bad':
+                popUpScore('ui/popup/funkin/bad', event.comboCount);
+
+            case 'shit':
+                popUpScore('ui/popup/funkin/shit', event.comboCount);
+            }
+        }
+            else{
+                switch (event.judgement)
+        {
+            case 'sick':
+                if(event.hitDiff <= 22.5) popUpScore('notestyles/epic-pixel', event.comboCount);
+                else popUpScore('ui/popup/pixel/sick', event.comboCount);
+
+            case 'good':
+                popUpScore('ui/popup/pixel/good', event.comboCount);
+
+            case 'bad':
+                popUpScore('ui/popup/pixel/bad', event.comboCount);
+
+            case 'shit':
+                popUpScore('ui/popup/pixel/shit', event.comboCount);
+            }
+        }
+    }
+
+    public function popUpScore(judgement:String, combo:Int)
+    {
+    FlxTween.cancelTweensOf(popUps, ["scale.x", "scale.y", "alpha"]);
+    popUps.loadGraphic(Paths.image(judgement));
+    popUps.screenCenter(0x01);
+    popUps.x -= 50;
+    popUps.scale.x = 0.25;
+    popUps.scale.y = 0.25;
+    popUps.alpha = 1;
+    FlxTween.tween(popUps.scale, {x: 0.5, y: 0.5}, 0.5, {ease: FlxEase.expoOut});
+    FlxTween.tween(popUps, {alpha: 0.001}, 0.5, {startDelay: 0.7});
+}
+}
