@@ -16,23 +16,23 @@ class LegacyPopUps extends Module
         super('LegacyPopUps', {state: PlayState});
         for (i in 0...10)
         {
-            FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/num' + i));
-            FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/num' + i));
+            FunkinMemory.cacheTexture(Paths.image('notestyles/num' + i));
+            FunkinMemory.cacheTexture(Paths.image('notestyles/num' + i + '-pixel'));
         }
         
         // normal
         FunkinMemory.cacheTexture(Paths.image('notestyles/epic'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/sick'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/good'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/bad'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/shit'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/sick'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/good'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/bad'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/shit'));
 
         // pixel
         FunkinMemory.cacheTexture(Paths.image('notestyles/epic-pixel'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/sick'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/good'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/bad'));
-        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/shit'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/sick-pixel'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/good-pixel'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/bad-pixel'));
+        FunkinMemory.cacheTexture(Paths.image('notestyles/shit-pixel'));
     }
 
     public var popUps:Null<FlxSprite>;
@@ -84,16 +84,16 @@ class LegacyPopUps extends Module
         {
             case 'sick':
                 if(Math.abs(event.hitDiff) <= 22.5) popUpScore('notestyles/epic-pixel', event.comboCount);
-                else popUpScore('ui/popup/pixel/sick', event.comboCount);
+                else popUpScore('notestyles/sick-pixel', event.comboCount);
 
             case 'good':
-                popUpScore('ui/popup/pixel/good', event.comboCount);
+                popUpScore('notestyles/good-pixel', event.comboCount);
 
             case 'bad':
-                popUpScore('ui/popup/pixel/bad', event.comboCount);
+                popUpScore('notestyles/bad-pixel', event.comboCount);
 
             case 'shit':
-                popUpScore('ui/popup/pixel/shit', event.comboCount);
+                popUpScore('notestyles/shit-pixel', event.comboCount);
             }
         }
     }
