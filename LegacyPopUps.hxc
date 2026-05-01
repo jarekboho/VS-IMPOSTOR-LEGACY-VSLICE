@@ -1,0 +1,305 @@
+import funkin.modding.module.Module;
+import flixel.FlxSprite;
+import funkin.play.PlayState;
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+import funkin.FunkinMemory;
+import funkin.Paths;
+import funkin.Conductor;
+import flixel.group.FlxTypedGroup;
+import StringTools;
+
+class LegacyPopUps extends Module
+{
+    public function new()
+    {
+        super('LegacyPopUps', {state: PlayState});
+        for (i in 0...10)
+        {
+            FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/num' + i));
+            FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/num' + i));
+        }
+        
+        // normal
+        FunkinMemory.cacheTexture(Paths.image('notestyles/epic'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/sick'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/good'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/bad'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/funkin/shit'));
+
+        // pixel
+        FunkinMemory.cacheTexture(Paths.image('notestyles/epic-pixel'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/sick'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/good'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/bad'));
+        FunkinMemory.cacheTexture(Paths.image('ui/popup/pixel/shit'));
+    }
+
+    public var popUps:Null<FlxSprite>;
+    public var comboNumber:Null<FunkinSprite>;
+
+    function onCountdownStart(event)
+    {
+        super.onCountdownStart(event);
+        if(PlayState.instance.noteStyle.id.toLowerCase() != 'impostor' && PlayState.instance.noteStyle.id.toLowerCase() != 'pixelImpostor') return;
+
+        popUps = new FlxSprite().loadGraphic(Paths.image('notestyles/epic'));
+        popUps.cameras = [PlayState.instance.camHUD];
+        PlayState.instance.add(popUps);
+        popUps.alpha = 0.001;
+        PlayState.instance.remove(PlayState.instance.comboPopUps);
+
+		ratingNumGroup = new FlxTypedGroup();
+        ratingNumGroup.cameras = [PlayState.instance.camHUD];
+		PlayState.instance.add(ratingNumGroup);
+    }
+
+    override function onNoteHit(event)
+    {
+        if(PlayState.instance == null) return;
+        if(PlayState.instance.noteStyle.id != 'impostor' && PlayState.instance.noteStyle.id != 'pixelImpostor') return;
+        super.onNoteHit(event);
+
+        if(PlayState.instance.noteStyle.id.toLowerCase() == 'impostor')
+        {
+        switch (event.judgement)
+        {
+            
+            case 'sick':
+                if(Math.abs(event.hitDiff) <= 22.5) popUpScore('notestyles/epic', event.comboCount);
+                else popUpScore('notestyles/sick', event.comboCount);
+
+            case 'good':
+                popUpScore('notestyles/good', event.comboCount);
+
+            case 'bad':
+                popUpScore('notestyles/bad', event.comboCount);
+
+            case 'shit':
+                popUpScore('notestyles/shit', event.comboCount);
+            }
+        }
+            else{
+                switch (event.judgement)
+        {
+            case 'sick':
+                if(Math.abs(event.hitDiff) <= 22.5) popUpScore('notestyles/epic-pixel', event.comboCount);
+                else popUpScore('ui/popup/pixel/sick', event.comboCount);
+
+            case 'good':
+                popUpScore('ui/popup/pixel/good', event.comboCount);
+
+            case 'bad':
+                popUpScore('ui/popup/pixel/bad', event.comboCount);
+
+            case 'shit':
+                popUpScore('ui/popup/pixel/shit', event.comboCount);
+            }
+        }
+    }
+
+    public function popUpScore(judgement:String, combo:Int)
+    {
+    FlxTween.cancelTweensOf(popUps, ["scale.x", "scale.y", "alpha"]);
+
+    popUps.alpha = 1;
+    popUps.loadGraphic(Paths.image(judgement));
+    popUps.x = 538.01;
+    popUps.y = 55;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    {
+    if(StringTools.contains(judgement, 'epic'))
+    {
+    popUps.x = 527.536;
+    }
+    if(StringTools.contains(judgement, 'sick'))
+    {
+    popUps.x = 554.393;
+    }
+    if(StringTools.contains(judgement, 'good'))
+    {
+    popUps.x = 574.536;
+    }
+    if(StringTools.contains(judgement, 'bad'))
+    {
+    popUps.x = 593;
+    }
+    if(StringTools.contains(judgement, 'shit'))
+    {
+    popUps.x = 581.25;
+    }
+    }
+    if(PlayState.instance.playerStrumline.isDownscroll)
+    popUps.y = 594.33;
+
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    popUps.antialiasing = false;
+    popUps.scale.set(0.46, 0.46);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    popUps.scale.set(3.3, 3.3);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    FlxTween.tween(popUps.scale, {x: 3, y: 3}, 0.5, {ease: FlxEase.expoOut});
+    else
+    FlxTween.tween(popUps.scale, {x: 0.42, y: 0.42}, 0.5, {ease: FlxEase.expoOut});
+    popUps.width = 203.98;
+    popUps.height = 75.67;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    {
+    if(StringTools.contains(judgement, 'epic'))
+    {
+    popUps.width = 224.929;
+    popUps.height = 77.214;
+    }
+    if(StringTools.contains(judgement, 'sick'))
+    {
+    popUps.width = 171.214;
+    popUps.height = 67.143;
+    }
+    if(StringTools.contains(judgement, 'good'))
+    {
+    popUps.width = 130.929;
+    popUps.height = 53.714;
+    }
+    if(StringTools.contains(judgement, 'bad'))
+    {
+    popUps.width = 94;
+    popUps.height = 63.786;
+    }
+    if(StringTools.contains(judgement, 'shit'))
+    {
+    popUps.width = 117.5;
+    popUps.height = 67.143;
+    }
+    }
+    popUps.offset.set(115.01, 42.665);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    {
+    if(StringTools.contains(judgement, 'epic'))
+    {
+    popUps.offset.set(-78.964, -27.107);
+    }
+    if(StringTools.contains(judgement, 'sick'))
+    {
+    popUps.offset.set(-60.107, -23.571);
+    }
+    if(StringTools.contains(judgement, 'good'))
+    {
+    popUps.offset.set(-45.964, -18.857);
+    }
+    if(StringTools.contains(judgement, 'bad'))
+    {
+    popUps.offset.set(-33, -22.393);
+    }
+    if(StringTools.contains(judgement, 'shit'))
+    {
+    popUps.offset.set(-41.25, -23.571);
+    }
+    }
+    popUps.origin.set(217, 80.5);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    {
+    if(StringTools.contains(judgement, 'epic'))
+    {
+    popUps.origin.set(33.5, 11.5);
+    }
+    if(StringTools.contains(judgement, 'sick'))
+    {
+    popUps.origin.set(25.5, 10);
+    }
+    if(StringTools.contains(judgement, 'good'))
+    {
+    popUps.origin.set(19.5, 8);
+    }
+    if(StringTools.contains(judgement, 'bad'))
+    {
+    popUps.origin.set(14, 9.5);
+    }
+    if(StringTools.contains(judgement, 'shit'))
+    {
+    popUps.origin.set(17.5, 10);
+    }
+    }
+    FlxTween.tween(popUps, {alpha: 0}, 0.5, {startDelay: Conductor.instance.stepLengthMs * 0.01, ease: FlxEase.expoOut});
+
+    for (i in ratingNumGroup)
+    {
+    if (i.alive)
+    {
+    i.kill();
+    }
+    }
+
+    var seperatedScore:Array<Int> = [];
+
+    if (combo >= 1000)
+    {
+    seperatedScore.push(Math.floor(combo / 1000) % 10);
+    }
+    seperatedScore.push(Math.floor(combo / 100) % 10);
+    seperatedScore.push(Math.floor(combo / 10) % 10);
+    seperatedScore.push(combo % 10);
+
+    var daLoop:Int = 0;
+    for (i in seperatedScore)
+    {
+    var numScore:FlxSprite = ratingNumGroup.recycle(FlxSprite);
+    FlxTween.cancelTweensOf(numScore);
+
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.loadGraphic(Paths.image('notestyles/' + 'num' + Std.int(i) + '-pixel'));
+    else
+    numScore.loadGraphic(Paths.image('notestyles/' + 'num' + Std.int(i)));
+    numScore.alpha = 1;
+    if(daLoop == 0)
+    {
+    numScore.x = 580.6;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.x = 584.5;
+    }
+    if(daLoop == 1)
+    {
+    numScore.x = 610.3;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.x = 611.5;
+    }
+    if(daLoop == 2)
+    {
+    numScore.x = 640;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.x = 637;
+    }
+    numScore.y = 122.5;
+    if(PlayState.instance.playerStrumline.isDownscroll)
+    numScore.y = 637;
+
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.antialiasing = false;
+    numScore.scale.set(0.346, 0.346);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.scale.set(3.150, 3.150);
+    FlxTween.cancelTweensOf(numScore, ['scale.x', 'scale.y']);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    FlxTween.tween(numScore.scale, {x: 3, y: 3}, 0.5, {ease: FlxEase.expoOut});
+    else
+    FlxTween.tween(numScore.scale, {x: 0.33, y: 0.33}, 0.5, {ease: FlxEase.expoOut});
+
+    numScore.width = 42;
+    numScore.height = 42;
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    {
+    numScore.width = 28.636;
+    numScore.height = 38.182;
+    }
+    numScore.offset.set(39, 39);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.offset.set(-9.818, -13.091);
+    numScore.origin.set(60, 60);
+    if(PlayState.instance.noteStyle.id == 'pixelImpostor')
+    numScore.origin.set(4.5, 6);
+    ratingNumGroup.add(numScore);
+    FlxTween.tween(numScore, {alpha: 0}, 0.5, {startDelay: Conductor.instance.stepLengthMs * 0.01, ease: FlxEase.expoOut});
+
+    daLoop++;
+    }
+}
+}
